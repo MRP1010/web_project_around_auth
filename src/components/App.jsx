@@ -9,7 +9,7 @@ import CurrentUserContext from "../contexts/CurrentUserContext";
 import Register from "./Register/Register";
 import Login from "./Login/Login";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
-import InfoTooltip from "./InfoTooltip/InfoTooltip";
+import InfoTooltip from "./InfoTooltip";
 
 import * as auth from "../utils/auth";
 
@@ -66,16 +66,16 @@ function App() {
       .register(email, password)
       .then((res) => {
         if (res) {
-          setIsSuccess(true); // Configura el Tooltip en modo ÉXITO
+          setIsSuccess(true);
           console.log("¡Usuario registrado con éxito!", res);
-          setIsInfoTooltipOpen(true); // Abre el modal visualizado en la imagen
-          navigate("/signin"); // Redirige al inicio de sesión
+          setIsInfoTooltipOpen(true);
+          navigate("/signin");
         }
       })
       .catch((err) => {
         console.error("Error en el registro:", err);
-        setIsSuccess(false); // Configura el Tooltip en modo ERROR
-        setIsInfoTooltipOpen(true); // Abre el modal informando el error
+        setIsSuccess(false);
+        setIsInfoTooltipOpen(true);
       });
   };
 
@@ -85,16 +85,18 @@ function App() {
       .authorize(email, password)
       .then((data) => {
         if (data.token) {
-          localStorage.setItem("jwt", data.token); // Guardamos el token de forma persistente
+          localStorage.setItem("jwt", data.token); //Guardamos los datos
           api.setToken(data.token);
           setUserEmail(email);
           setLoggedIn(true);
-          navigate("/"); // Acceso concedido a la ruta raíz
+          navigate("/");
         }
       })
-      .catch((err) => console.error("Error en la autorización:", err));
-    //setIsSuccess(false);        // Opcional: abre el modal si los datos de login son incorrectos
-    //setIsInfoTooltipOpen(true);
+      .catch((err) => {
+        console.error("Error en la autorización:", err);
+        setIsSuccess(false);
+        setIsInfoTooltipOpen(true);
+      });
   };
 
   // Controlador de Cierre de Sesión
