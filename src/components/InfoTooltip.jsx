@@ -1,8 +1,10 @@
 import React from "react";
 
+import "./InfoTooltip.css";
+
 function InfoTooltip({ isOpen, onClose, isSuccess }) {
-  const successIcon = "/images/okimg.svg";
-  const errorIcon = "/images/errorimg.svg";
+  const successIcon = "/okimg.SVG";
+  const errorIcon = "/errorimg.SVG";
 
   return (
     <div className={`popup ${isOpen ? "popup_opened" : ""}`}>

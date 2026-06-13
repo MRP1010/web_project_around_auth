@@ -1,0 +1,55 @@
+.popup__container_type_tooltip {
+  background-color: #ffffff;
+  padding: 60px 36px;
+  max-width: 430px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  position: relative;
+  border-radius: 10px;
+}
+
+.popup__tooltip-icon {
+  width: 120px;
+  height: 120px;
+  margin-bottom: 32px;
+  object-fit: contain;
+}
+
+.popup__tooltip-text {
+  font-family: "Inter", Arial, sans-serif;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
+  text-align: center;
+  color: #000000;
+  margin: 0;
+  max-width: 358px;
+}
+
+.popup__container_type_tooltip .popup__close-button {
+  top: -40px;
+  right: -40px;
+}
+
+/* Adaptación móvil */
+@media screen and (max-width: 580px) {
+  .popup__container_type_tooltip {
+    max-width: 282px;
+    padding: 50px 16px;
+  }
+
+  .popup__tooltip-icon {
+    width: 90px;
+    height: 90px;
+    margin-bottom: 40px;
+  }
+
+  .popup__tooltip-text {
+    font-size: 20px;
+    line-height: 24px;
+  }
+}
