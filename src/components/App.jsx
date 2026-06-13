@@ -9,6 +9,7 @@ import CurrentUserContext from "../contexts/CurrentUserContext";
 import Register from "./Register/Register";
 import Login from "./Login/Login";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
+import InfoTooltip from "./InfoTooltip/InfoTooltip";
 
 import * as auth from "../utils/auth";
 
@@ -21,6 +22,8 @@ function App() {
   // Añadimos el estado para controlar si el usuario está autenticado
   const [loggedIn, setLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState("");
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const navigate = useNavigate();
 
@@ -63,12 +66,16 @@ function App() {
       .register(email, password)
       .then((res) => {
         if (res) {
+          setIsSuccess(true); // Configura el Tooltip en modo ÉXITO
           console.log("¡Usuario registrado con éxito!", res);
-          navigate("/signin"); // Redirigimos al inicio de sesión
+          setIsInfoTooltipOpen(true); // Abre el modal visualizado en la imagen
+          navigate("/signin"); // Redirige al inicio de sesión
         }
       })
       .catch((err) => {
         console.error("Error en el registro:", err);
+        setIsSuccess(false); // Configura el Tooltip en modo ERROR
+        setIsInfoTooltipOpen(true); // Abre el modal informando el error
       });
   };
 
@@ -86,6 +93,8 @@ function App() {
         }
       })
       .catch((err) => console.error("Error en la autorización:", err));
+    //setIsSuccess(false);        // Opcional: abre el modal si los datos de login son incorrectos
+    //setIsInfoTooltipOpen(true);
   };
 
   // Controlador de Cierre de Sesión
@@ -100,6 +109,10 @@ function App() {
 
   const handleOpenPopup = (config) => setPopup(config);
   const handleClosePopup = () => setPopup(null);
+
+  const handleCloseAllPopups = () => {
+    setIsInfoTooltipOpen(false);
+  };
 
   const handleUpdateUser = (data) => {
     (async () => {
@@ -191,7 +204,7 @@ function App() {
       <div className="page__content">
         <Header
           loggedIn={loggedIn}
-          userEmail={currentUser.email}
+          userEmail={userEmail}
           onSignOut={handleSignOut}
         />
         <Routes>
@@ -229,6 +242,11 @@ function App() {
         </Routes>
 
         <Footer />
+        <InfoTooltip
+          isOpen={isInfoTooltipOpen}
+          onClose={handleCloseAllPopups}
+          isSuccess={isSuccess}
+        />
       </div>
     </CurrentUserContext.Provider>
   );

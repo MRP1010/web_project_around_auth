@@ -1,6 +1,6 @@
 import React from "react";
-import successIcon from "../images/success-icon.svg"; // Asegúrate de añadir estos assets
-import errorIcon from "../images/error-icon.svg";
+import successIcon from "../../images/okimg.svg";
+import errorIcon from "../../images/errorimg.svg";
 
 function InfoTooltip({ isOpen, onClose, isSuccess }) {
   return (
@@ -10,10 +10,11 @@ function InfoTooltip({ isOpen, onClose, isSuccess }) {
           type="button"
           onClick={onClose}
           className="popup__close-button"
+          aria-label="Cerrar modal"
         />
         <img
           src={isSuccess ? successIcon : errorIcon}
-          alt={isSuccess ? "Éxito" : "Error"}
+          alt={isSuccess ? "Registro correcto" : "Algo salió mal"}
           className="popup__tooltip-icon"
         />
         <p className="popup__tooltip-text">
