@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Header from "./Header/Header";
 import Main from "./Main/Main";
 import Footer from "./Footer/Footer";
@@ -10,6 +10,8 @@ import Register from "./Register/Register";
 import Login from "./Login/Login";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
 
+import * as auth from "../utils/auth";
+
 function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [popup, setPopup] = useState(null);
@@ -18,6 +20,26 @@ function App() {
 
   // Añadimos el estado para controlar si el usuario está autenticado
   const [loggedIn, setLoggedIn] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      auth
+        .checkToken(jwt)
+        .then((res) => {
+          if (res && res.data) {
+            api.setToken(jwt);
+            setUserEmail(res.data.email);
+            setLoggedIn(true);
+            navigate("/"); // Redirigimos a la app principal
+          }
+        })
+        .catch((err) => console.error("Token inválido o expirado:", err));
+    }
+  }, [navigate]);
 
   useEffect(() => {
     if (loggedIn) {
@@ -34,6 +56,47 @@ function App() {
       })();
     }
   }, [loggedIn]);
+
+  // Registro
+  const handleRegisterSubmit = (email, password) => {
+    auth
+      .register(email, password)
+      .then((res) => {
+        if (res) {
+          console.log("¡Usuario registrado con éxito!", res);
+          navigate("/signin"); // Redirigimos al inicio de sesión
+        }
+      })
+      .catch((err) => {
+        console.error("Error en el registro:", err);
+      });
+  };
+
+  // Controlador de Inicio de Sesión (/signin)
+  const handleLoginSubmit = (email, password) => {
+    auth
+      .authorize(email, password)
+      .then((data) => {
+        if (data.token) {
+          localStorage.setItem("jwt", data.token); // Guardamos el token de forma persistente
+          api.setToken(data.token);
+          setUserEmail(email);
+          setLoggedIn(true);
+          navigate("/"); // Acceso concedido a la ruta raíz
+        }
+      })
+      .catch((err) => console.error("Error en la autorización:", err));
+  };
+
+  // Controlador de Cierre de Sesión
+  const handleSignOut = () => {
+    localStorage.removeItem("jwt");
+    setLoggedIn(false);
+    setUserEmail("");
+    setCurrentUser({});
+    setCards([]);
+    navigate("/signin");
+  };
 
   const handleOpenPopup = (config) => setPopup(config);
   const handleClosePopup = () => setPopup(null);
@@ -115,12 +178,6 @@ function App() {
     setLoggedIn(true);
   };
 
-  const handleSignOut = () => {
-    localStorage.removeItem("jwt");
-    setLoggedIn(false);
-    setCurrentUser({});
-  };
-
   return (
     // Pasamos handleAddPlaceSubmit a través de nuestro contexto global
     <CurrentUserContext.Provider
@@ -155,10 +212,16 @@ function App() {
           />
 
           {/* Rutas públicas para usuarios no autorizados */}
-          <Route path="/signup" element={<Register />} />
-          <Route path="/signin" element={<Login onLogin={handleLogin} />} />
+          <Route
+            path="/signup"
+            element={<Register onRegister={handleRegisterSubmit} />}
+          />
+          <Route
+            path="/signin"
+            element={<Login onLogin={handleLoginSubmit} />}
+          />
 
-          {/* Redirección por defecto si la ruta no existe */}
+          {/* Redirección por defecto */}
           <Route
             path="*"
             element={<Navigate to={loggedIn ? "/" : "/signin"} replace />}

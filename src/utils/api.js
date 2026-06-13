@@ -4,6 +4,13 @@ class Api {
     this._headers = options.headers;
   }
 
+  setToken(token) {
+    this._headers = {
+      ...this._headers,
+      Authorization: `Bearer ${token}`, // JWT
+    };
+  }
+
   _checkResponse(res) {
     if (res.ok) {
       return res.json();
