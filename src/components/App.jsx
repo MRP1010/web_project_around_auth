@@ -23,8 +23,8 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState("");
 
-  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(true);
-  const [isSuccess, setIsSuccess] = useState(true);
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const navigate = useNavigate();
 
