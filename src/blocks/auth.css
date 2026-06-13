@@ -8,7 +8,8 @@
 }
 
 .auth__title {
-  font-weight: 900;
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 530;
   font-size: 24px;
   margin-bottom: 50px;
 }
@@ -30,22 +31,43 @@
 }
 
 .auth__button {
+  font-family: "Inter", Arial, sans-serif;
   background: #ffffff;
   color: #000000;
   border: none;
   padding: 15px;
   border-radius: 2px;
-  font-weight: bold;
   cursor: pointer;
   margin-top: 30px;
 }
 
-.auth__signin-prompt {
-  margin-top: 15px;
+.auth__signup-prompt {
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 400;
   font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #ffffff;
+  margin-top: 15px;
+}
+
+.auth__signin-prompt {
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #ffffff;
+  margin-top: 15px;
 }
 
 .auth__link {
   color: #ffffff;
   text-decoration: none;
+  font-weight: 400;
+  transition: opacity 0.2s ease;
+}
+
+.auth__link:hover {
+  opacity: 0.6; /* Efecto sutil al pasar el cursor */
 }
