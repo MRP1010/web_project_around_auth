@@ -1,18 +1,16 @@
 import React from "react";
 
-import "./InfoTooltip.css";
-
 function InfoTooltip({ isOpen, onClose, isSuccess }) {
-  const successIcon = "/okimg.SVG";
-  const errorIcon = "/errorimg.SVG";
+  const successIcon = "./images/okimg.svg";
+  const errorIcon = "./images/errorimg.svg";
 
   return (
-    <div className={`popup ${isOpen ? "popup_opened" : ""}`}>
+    <div className={`popup ${isOpen ? "popup_is-opened" : ""}`}>
       <div className="popup__container popup__container_type_tooltip">
         <button
           type="button"
           onClick={onClose}
-          className="popup__close-button"
+          className="popup__close"
           aria-label="Cerrar modal"
         />
         <img
